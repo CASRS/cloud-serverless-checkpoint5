@@ -1,0 +1,6 @@
+{
+  "idempotency_key": "order-003",
+  "order_id": "order-003",
+  "operation": "CREATE",
+  "correlation_id": "test-004"
+}

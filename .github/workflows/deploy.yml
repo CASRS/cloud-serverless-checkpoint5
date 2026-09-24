@@ -1,0 +1,46 @@
+name: Deploy Terraform
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Deploy na EC2
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Conectar na EC2 e executar Terraform
+        uses: appleboy/ssh-action@v1.2.2
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+
+          script: |
+            set -e
+
+            echo "Atualizando código..."
+            cd /home/ec2-user/checkpoint_5
+
+            git fetch origin
+            git reset --hard origin/main
+
+            echo "Entrando na pasta Terraform..."
+            cd terraform
+
+            echo "Terraform Init..."
+            terraform init
+
+            echo "Terraform Validate..."
+            terraform validate
+
+            echo "Terraform Plan..."
+            terraform plan
+
+            echo "Terraform Apply..."
+            terraform apply -auto-approve
+
+            echo "Verificando Pods..."
+            kubectl get pods -A
