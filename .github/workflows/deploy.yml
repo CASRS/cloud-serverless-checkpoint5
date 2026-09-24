@@ -22,7 +22,7 @@ jobs:
             set -e
 
             echo "Atualizando código.."
-            cd /home/ec2-user/checkpoint_5
+            cd /home/ec2-user/checkpoint_5/cloud-serverless-checkpoint5
 
             git fetch origin
             git reset --hard origin/main
